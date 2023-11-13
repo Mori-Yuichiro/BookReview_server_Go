@@ -161,7 +161,7 @@ func insertComment(isbn, comment string) {
 func main() {
 	bookInfo := selectDb()
 
-	Demo_Mux := http.NewServeMux()
+	Mux := http.NewServeMux()
 
 	Demo_CORS := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"}, //all
@@ -170,7 +170,7 @@ func main() {
 		AllowCredentials: false,         //none
 	})
 
-	Demo_Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// データをJSON形式でフロントエンドに返す
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(bookInfo); err != nil {
@@ -178,7 +178,7 @@ func main() {
 		}
 	})
 
-	Demo_Mux.HandleFunc("/book/post", func(w http.ResponseWriter, r *http.Request) {
+	Mux.HandleFunc("/book/post", func(w http.ResponseWriter, r *http.Request) {
 		len := r.ContentLength
 		body := make([]byte, len) // Content-Length と同じサイズの byte 配列を用意
 		r.Body.Read(body)         // byte 配列にリクエストボディを読み込む
@@ -195,7 +195,7 @@ func main() {
 
 	})
 
-	Demo_Mux.HandleFunc("/comment/post", func(w http.ResponseWriter, r *http.Request) {
+	Mux.HandleFunc("/comment/post", func(w http.ResponseWriter, r *http.Request) {
 		len := r.ContentLength
 		body := make([]byte, len) // Content-Length と同じサイズの byte 配列を用意
 		r.Body.Read(body)         // byte 配列にリクエストボディを読み込む
@@ -212,7 +212,7 @@ func main() {
 
 	})
 
-	Demo_Handler := Demo_CORS.Handler(Demo_Mux)
+	Demo_Handler := Demo_CORS.Handler(Mux)
 
 	// http.HandleFunc("/index/", indexHandler)
 	log.Fatal(http.ListenAndServe(":3000", Demo_Handler))
