@@ -19,7 +19,7 @@ type Book struct {
 	// ID    int    `json:"id"`
 	Title   string `json:"title"`
 	ISBN    string `json:"isbn"`
-	Comment string `json:"comment"`
+	Comment string `json:"comments"`
 }
 
 type BookInfo struct {
@@ -159,7 +159,7 @@ func insertComment(isbn, comment string) {
 }
 
 func main() {
-	bookInfo := selectDb()
+	// bookInfo := selectDb()
 
 	Mux := http.NewServeMux()
 
@@ -172,6 +172,7 @@ func main() {
 
 	Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// データをJSON形式でフロントエンドに返す
+		bookInfo := selectDb()
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(bookInfo); err != nil {
 			log.Fatal(err)
