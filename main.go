@@ -7,7 +7,7 @@ import (
 
 	"github.com/rs/cors"
 
-	db "BookReview/models"
+	"BookReview/models"
 )
 
 type BookInfo struct {
@@ -33,7 +33,7 @@ func main() {
 
 	Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// データをJSON形式でフロントエンドに返す
-		bookInfo := db.SelectDb()
+		bookInfo := models.SelectDb()
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(bookInfo); err != nil {
 			log.Fatal(err)
@@ -53,7 +53,7 @@ func main() {
 		}
 		title := book.Title
 		isbn := book.ISBN
-		db.InsertBook(title, isbn)
+		models.InsertBook(title, isbn)
 
 	})
 
@@ -70,7 +70,7 @@ func main() {
 		}
 		isbn := commentInfo.ISBN
 		comment := commentInfo.Comment
-		db.InsertComment(isbn, comment)
+		models.InsertComment(isbn, comment)
 
 	})
 
